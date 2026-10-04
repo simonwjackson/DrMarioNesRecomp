@@ -4,17 +4,15 @@ project(DrMarioRecomp C CXX)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-set(DRMARIO_REGION "usa" CACHE STRING "Dr. Mario ROM region (usa or eu)")
-set_property(CACHE DRMARIO_REGION PROPERTY STRINGS usa eu)
-if(DRMARIO_REGION STREQUAL "usa")
-    set(DRMARIO_PREFIX "dr-mario-usa")
-    set(DRMARIO_CRC 0xDE581355)
-elseif(DRMARIO_REGION STREQUAL "eu")
-    set(DRMARIO_PREFIX "dr-mario")
-    set(DRMARIO_CRC 0x9735D267)
-else()
-    message(FATAL_ERROR "DRMARIO_REGION must be usa or eu")
+# This maintenance branch pins a PAL-only runner. Reject other regions rather
+# than silently run their translated code with Europe's hardware clocks.
+set(DRMARIO_REGION "eu" CACHE STRING "Dr. Mario ROM region (Europe PAL only)")
+set_property(CACHE DRMARIO_REGION PROPERTY STRINGS eu)
+if(NOT DRMARIO_REGION STREQUAL "eu")
+    message(FATAL_ERROR "This maintenance branch supports Europe PAL only: DRMARIO_REGION must be eu")
 endif()
+set(DRMARIO_PREFIX "dr-mario")
+set(DRMARIO_CRC 0x9735D267)
 
 file(GLOB DRMARIO_PARTS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/generated/${DRMARIO_PREFIX}_full_bank*_part*.c")
 

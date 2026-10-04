@@ -1,5 +1,35 @@
 # DrMarioNesRecomp
 
+## Maintained Europe-only Linux branch
+
+This `korri-dr-mario-eu` branch carries the tested Korri runner fixes under
+`simonwjackson`. It starts from upstream game commit
+`a23472870e0a86dc0c94d88ac1ee3be5a7ea80f9`. Generated game code is unchanged.
+The pinned [framework fork](https://github.com/simonwjackson/nesrecomp) adds PAL
+CPU/PPU/APU clocks, fractional audio blocks, accumulated SDL deadlines,
+working-directory state storage, and complete literal ROM-path handling.
+The unmodified UI remains at upstream commit
+`44f549c0f159df343cba9d8c3842dbc7e592eb08`.
+
+Only the owned Europe ROM is supported: 65552 bytes, whole-file SHA-256
+`83914c08f82fc70779121760a48392af3a5988f015794eb53cbe1aa0a165c821`,
+headerless CRC32 `9735D267`. Configure with `-DDRMARIO_REGION=eu`, which is also
+the default here. CMake rejects other regions because this runner is PAL-only.
+The Korri launcher enforces the exact ROM and supplies
+`<accountRoot>/DrMarioRecomp` as the writable working directory. Native state
+filenames and the save format remain unchanged. No retail ROM is included.
+
+The same runtime source passed native x86_64 and aarch64 Linux checks. The signed
+private package runs on Retroid Pocket Mini V2 at a measured 49.98 to 50.33
+frames/second with turbo off. Digital audio checks passed. The owner reported
+"Feels good." after the PAL update. This is not a cycle-perfect PAL claim or
+proof of complete gameplay. Device save/load remains untested. Detailed checks
+live in [the plugin repository](https://github.com/simonwjackson/korri-plugins/tree/main/plugins/dr-mario).
+
+GitHub Actions are disabled. Native outputs remain private. The original
+upstream instructions below are reference material; they do not describe this
+branch's supported regions, storage paths or available release assets.
+
 > _This recompilation is a **byproduct of developing
 > [nesrecomp](https://github.com/mstan/nesrecomp)** — the games are the proving ground, the framework is the goal.
 > **These are in-development previews, not finished ports — expect rough
